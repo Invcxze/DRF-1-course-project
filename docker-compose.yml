@@ -3,35 +3,25 @@ version: '3.9'
 services:
   web:
     build:
-      context: /Users/vladhramenko/PycharmProjects/BackWSKA/DRF-1-course-project/
+      context: .
       dockerfile: Dockerfile
     container_name: django_web
     command: >
       sh -c "
-      python manage.py migrate &&
-      python manage.py runserver 0.0.0.0:8000
+      python /app/ShopApi/manage.py migrate &&
+      python /app/ShopApi/manage.py runserver 0.0.0.0:8000
       "
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - redis
     environment:
       - DEBUG=True
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
 
-  db:
-    image: postgres:15
-    container_name: postgres_db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+  redis:
+    image: redis:7.2.5
+    container_name: redis_server
     ports:
-      - "5432:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-
-volumes:
-  pg_data:
+      - "6379:6379"

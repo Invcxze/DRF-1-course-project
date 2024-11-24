@@ -145,3 +145,16 @@ AUTH_USER_MODEL = 'users.User'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ['users.auth.Bearer']
 }
+
+INSTALLED_APPS += ['channels']
+ASGI_APPLICATION = 'ShopAPi.asgi.application'
+
+# Channel layers configuration (e.g., using Redis)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
